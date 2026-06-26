@@ -5,36 +5,36 @@
 
 import time
 import math
+import csv
 
 memo = []
 
-calculationNum = 0
 
 def prime_checker(number):
-    global calculationNum
+    global memo
     # Check if number is 1 or below
     if number < 2:
-        calculationNum += 1
         return False
 
     # Check if number is 2
     if number == 2:
-        calculationNum += 1
         return True
     
     # Check if number is even
     if number % 2 == 0:
-        calculationNum += 1
         return False
 
     # Check all odd divisors up to the square root of the number
     squaredNum = math.ceil(math.sqrt(number))
-
+    
     if len(memo) == 0 or max(memo)**2 < number:
         sieve_with_next(squaredNum)
+        with open("List_Of_Primes.csv", mode="r", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            memo = [int(x[0]) for x in reader]
+
 
     for i in range(len(memo)):
-        calculationNum += 1
         if number % memo[i] == 0:
             return False
             
@@ -74,10 +74,17 @@ def sieve_with_next(limit):
 
     primes.append(candidate)
 
-    memo.extend(primes)
+    with open("List_Of_Primes.csv", mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        for row in primes:
+            writer.writerow((row,))
 
 
 def ClosestPrimeFinder(number):
+    global memo
+    with open("List_Of_Primes.csv", mode="r", encoding="utf-8") as file:
+        reader = csv.reader(file)
+        memo = [int(x[0]) for x in reader]
 
     if prime_checker(number):
         return number
@@ -102,7 +109,7 @@ start_time = time.perf_counter()
 # check if user input is all numbers
 if num.isdigit():
 
-    try:
+    #try:
         #try to convert num to int, if float raise error
             # Check if num is 0
         num = int(num)
@@ -122,12 +129,11 @@ if num.isdigit():
                 print(f"Highest prime in memory: {max(memo)}")
                 
 
-    except ValueError:
-        print("Please enter a valid positive integer.")
+    #except ValueError:
+        #print("Please enter a valid positive integer.")
 else:
     print("Please enter a valid positive integer.")
 
-print(f"Number of calculations: {calculationNum}")
 
 end_time = time.perf_counter()
 print(f"Execution time: {end_time - start_time:.2f} seconds")

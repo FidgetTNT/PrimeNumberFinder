@@ -6,30 +6,25 @@
 import time
 import math
 
-calculationNum = 0
 
 def PrimeChecker(number):
     global calculationNum
     # Check if number is 1 or below
     if number < 2:
-        calculationNum += 1
         return False
 
     # Check if number is 2
     if number == 2:
-        calculationNum += 1
         return True
     
     # Check if number is even
     if number % 2 == 0:
-        calculationNum += 1
         return False
 
     # Check all odd divisors up to the square root of the number
     squaredNum = math.ceil(math.sqrt(number))
 
     for i in range(3, squaredNum, 2):
-        calculationNum += 1
         if number % i == 0:
             return False
     
@@ -81,8 +76,6 @@ if num.isdigit():
         print("Please enter a valid positive integer.")
 else:
     print("Please enter a valid positive integer.")
-
-print(f"Number of calculations: {calculationNum}")
 
 end_time = time.perf_counter()
 print(f"Execution time: {end_time - start_time:.2f} seconds")
